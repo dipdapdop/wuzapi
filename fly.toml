@@ -35,3 +35,7 @@ primary_region = 'syd'  # Sydney, Australia
   grace_period = "10s"
   method = "GET"
   path = "/health"
+
+# Add this section
+[[http_service.domains]]
+  name = "wuzapi.gasbridge.nz"
