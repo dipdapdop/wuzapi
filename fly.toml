@@ -4,12 +4,12 @@
 #
 
 app = 'wuzapi-shy-river-5375'
-primary_region = 'lhr'
+primary_region = 'lhr' # London, should be syd
 
 [build]
 
 [http_service]
-  internal_port = 8080
+  internal_port = 9001
   force_https = true
   auto_stop_machines = 'stop'
   auto_start_machines = true
