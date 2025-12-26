@@ -1,4 +1,21 @@
 # See https://fly.io/docs/app-guides/continuous-deployment-with-github-actions/
+#
+# IMPORTANT: Runtime secrets must be set using flyctl, not in this file
+# Run this command once to set all secrets:
+#
+#   flyctl secrets set \
+#     WUZAPI_ADMIN_TOKEN="your-token" \
+#     #WUZAPI_GLOBAL_ENCRYPTION_KEY="your-encryption-key" \
+#     #WUZAPI_GLOBAL_HMAC_KEY="your-hmac-key" \
+#     DB_USER="your-db-user" \
+#     DB_PASSWORD="your-db-password" \
+#     DB_NAME="your-db-name" \
+#     DB_HOST="your-db-host.internal" \
+#     DB_PORT="5432" \
+#     DB_SSLMODE="disable" \
+#     WUZAPI_GLOBAL_WEBHOOK="your-webhook-url"
+#
+# Non-sensitive config is in fly.toml [env] section
 
 name: Fly Deploy
 on:
@@ -9,35 +26,11 @@ jobs:
   deploy:
     name: Deploy app
     runs-on: ubuntu-latest
-    concurrency: deploy-group    # optional: ensure only one action runs at a time
+    concurrency: deploy-group    # Ensure only one deployment runs at a time
     steps:
       - uses: actions/checkout@v4
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-          PRIMARY_REGION: ${{ vars.PRIMARY_REGION }}
-          # Token for WuzAPI Admin
-          WUZAPI_ADMIN_TOKEN: ${{ secrets.WUZAPI_ADMIN_TOKEN }}
-
-          # WuzAPI Session Configuration
-          SESSION_DEVICE_NAME: ${{ secrets.SESSION_DEVICE_NAME }}
-
-          # Database configuration # all secret
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_USER }}
-          DB_NAME: ${{ secrets.DB_USER }}
-          DB_HOST: ${{ secrets.DB_USER }}
-          DB_PORT: ${{ secrets.DB_USER }}
-          DB_SSLMODE: ${{ secrets.DB_USER }}
-
-          #TZ=Australia/Sydney # defaults to UTC, which is correct IMO.
-
-          # Server Configuration
-          WUZAPI_PORT: ${{ vars.WUZAPI_PORT }}
-
-          # Global webhook URL
-          WUZAPI_GLOBAL_WEBHOOK: ${{ secrets.WUZAPI_GLOBAL_WEBHOOK }}
-
-          # "json" or "form" for the default
-          WEBHOOK_FORMAT: ${{ vars.WEBHOOK_FORMAT }}
+  

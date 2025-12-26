@@ -4,20 +4,34 @@
 #
 
 app = 'wuzapi-shy-river-5375'
-primary_region = 'lhr' # London, should be syd
+primary_region = 'syd'  # Sydney, Australia
 
 [build]
 
+[env]
+  # Non-sensitive environment variables
+  WEBHOOK_FORMAT = "json"
+  SESSION_DEVICE_NAME = "WuzAPI-Fly"
+  TZ = "Australia/Sydney"
+  WUZAPI_PORT = "8080"
+
 [http_service]
-  internal_port = 9001
+  internal_port = 8080  # wuzapi listens on port 8080
   force_https = true
-  auto_stop_machines = 'stop'
+  auto_stop_machines = 'off'  # Keep running - WhatsApp needs persistent connections
   auto_start_machines = true
-  min_machines_running = 0
+  min_machines_running = 1    # Always keep at least 1 machine running
   processes = ['app']
 
 [[vm]]
-  memory = '1gb'
   cpu_kind = 'shared'
   cpus = 1
-  memory_mb = 1024
+  memory_mb = 512  # 512MB is sufficient for wuzapi
+
+# Health check configuration
+[[services.http_checks]]
+  interval = "30s"
+  timeout = "5s"
+  grace_period = "10s"
+  method = "GET"
+  path = "/health"
