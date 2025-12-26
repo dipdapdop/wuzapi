@@ -1,0 +1,41 @@
+# fly.toml app configuration file generated for wuzapi-shy-river-5375 on 2025-12-26T16:32:27Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'wuzapi-shy-river-5375'
+primary_region = 'syd'  # Sydney, Australia
+
+[build]
+
+[env]
+  # Non-sensitive environment variables
+  WEBHOOK_FORMAT = "json"
+  SESSION_DEVICE_NAME = "WuzAPI-Fly"
+  TZ = "Australia/Sydney"
+  WUZAPI_PORT = "8080"
+
+[http_service]
+  internal_port = 8080  # wuzapi listens on port 8080
+  force_https = true
+  auto_stop_machines = 'off'  # Keep running - WhatsApp needs persistent connections
+  auto_start_machines = true
+  min_machines_running = 1    # Always keep at least 1 machine running
+  processes = ['app']
+
+  # Health check configuration
+  [[http_service.checks]]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "10s"
+    method = "GET"
+    path = "/health"
+
+[[vm]]
+  cpu_kind = 'shared'
+  cpus = 1
+  memory_mb = 512  # 512MB is sufficient for wuzapi
+
+# Custom domain
+[[http_service.domains]]
+  name = "wuzapi.gasbridge.nz"
