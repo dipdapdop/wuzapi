@@ -42,6 +42,17 @@ When HMAC is configured, all webhooks include an `x-hmac-signature` header with 
 
 * Always verify signatures before processing webhooks
 
+## Deployment Options
+
+WuzAPI can be deployed in several ways:
+
+- **Fly.io** (Recommended for production): See [DEPLOYMENT-FLY.md](DEPLOYMENT-FLY.md) for complete guide
+- **Docker Compose**: Use the included `docker-compose.yml` for local development or self-hosting
+- **Docker Swarm**: Use `docker-compose-swarm.yaml` for multi-node deployments
+- **Native Go**: Build and run directly (see below)
+
+For cloud deployment with persistent connections and managed infrastructure, Fly.io is recommended. See the [Fly.io Deployment Guide](DEPLOYMENT-FLY.md) for step-by-step instructions including database setup, secrets management, and custom domain configuration.
+
 ## Prerequisites
 
 **Required:**
@@ -49,6 +60,7 @@ When HMAC is configured, all webhooks include an `x-hmac-signature` header with 
 
 **Optional:**
 * Docker (for containerization)
+* Fly.io account (for cloud deployment)
 
 ## Updating dependencies
 
