@@ -23,19 +23,19 @@ primary_region = 'syd'  # Sydney, Australia
   min_machines_running = 1    # Always keep at least 1 machine running
   processes = ['app']
 
+  # Health check configuration
+  [[http_service.checks]]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "10s"
+    method = "GET"
+    path = "/health"
+
 [[vm]]
   cpu_kind = 'shared'
   cpus = 1
   memory_mb = 512  # 512MB is sufficient for wuzapi
 
-# Health check configuration
-[[services.http_checks]]
-  interval = "30s"
-  timeout = "5s"
-  grace_period = "10s"
-  method = "GET"
-  path = "/health"
-
-# Add this section
+# Custom domain
 [[http_service.domains]]
   name = "wuzapi.gasbridge.nz"
